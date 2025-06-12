@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Locadora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; }
+        .section { display: none; margin-bottom: 40px; }
+        .section.active { display: block; }
+        .form-group { margin-bottom: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Sistema de Locadora</h1>
+
+        <ul class="nav nav-tabs mb-4" id="navTabs">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" onclick="showSection('listarClientes')">Listar Clientes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSection('listarFilmes')">Listar Filmes</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSection('listarLocacoes')">Listar Locações</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSection('cadastrarCliente')">Cadastrar Cliente</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSection('cadastrarFilme')">Cadastrar Filme</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="showSection('cadastrarLocacao')">Cadastrar Locação</a>
+            </li>
+        </ul>
+
+        <div id="listarClientes" class="section active">
+            <h2>Clientes Cadastrados</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="clienteTableBody"></tbody>
+            </table>
+        </div>
+
+        <div id="listarFilmes" class="section">
+            <h2>Filmes Cadastrados</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Gênero</th>
+                        <th>Ano</th>
+                        <th>Disponível</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="filmeTableBody"></tbody>
+            </table>
+        </div>
+
+        <div id="listarLocacoes" class="section">
+            <h2>Locações Cadastradas</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Filme</th>
+                        <th>Data Locação</th> <th>Data Devolução</th> <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="locacaoTableBody"></tbody>
+            </table>
+        </div>
+
+        <div id="cadastrarCliente" class="section">
+            <h2>Cadastrar Cliente</h2>
+            <form id="clienteForm" class="mb-3">
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <input type="text" class="form-control" id="nomeCliente" placeholder="Nome" required>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <input type="email" class="form-control" id="emailCliente" placeholder="Email" required>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <input type="text" class="form-control" id="telefoneCliente" placeholder="Telefone" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+
+        <div id="cadastrarFilme" class="section">
+            <h2>Cadastrar Filme</h2>
+            <form id="filmeForm" class="mb-3">
+                <div class="row">
+                    <div class="col-md-3 form-group">
+                        <input type="text" class="form-control" id="tituloFilme" placeholder="Título" required>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <input type="text" class="form-control" id="generoFilme" placeholder="Gênero" required>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <input type="number" class="form-control" id="anoFilme" placeholder="Ano" required>
+                    </div>
+                    <div class="col-md-3 form-group">
+                        <select class="form-control" id="disponivelFilme" required>
+                            <option value="true">Disponível</option>
+                            <option value="false">Indisponível</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+
+        <div id="cadastrarLocacao" class="section">
+            <h2>Cadastrar Locação</h2>
+            <form id="locacaoForm" class="mb-3">
+                <div class="row">
+                    <div class="col-md-4 form-group">
+                        <select class="form-control" id="clienteLocacao" required>
+                            <option value="">Selecione um Cliente</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <select class="form-control" id="filmeLocacao" required>
+                            <option value="">Selecione um Filme</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <input type="date" class="form-control" id="dataLocacao" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editClienteModal" tabindex="-1" aria-labelledby="editClienteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editClienteModalLabel">Editar Cliente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editClienteForm">
+                        <input type="hidden" id="editClienteId">
+                        <div class="mb-3">
+                            <label for="editNomeCliente" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="editNomeCliente" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmailCliente" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editEmailCliente" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTelefoneCliente" class="form-label">Telefone</label>
+                            <input type="text" class="form-control" id="editTelefoneCliente" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editFilmeModal" tabindex="-1" aria-labelledby="editFilmeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editFilmeModalLabel">Editar Filme</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editFilmeForm">
+                        <input type="hidden" id="editFilmeId">
+                        <div class="mb-3">
+                            <label for="editTituloFilme" class="form-label">Título</label>
+                            <input type="text" class="form-control" id="editTituloFilme" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editGeneroFilme" class="form-label">Gênero</label>
+                            <input type="text" class="form-control" id="editGeneroFilme" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editAnoFilme" class="form-label">Ano</label>
+                            <input type="number" class="form-control" id="editAnoFilme" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDisponivelFilme" class="form-label">Disponibilidade</label>
+                            <select class="form-control" id="editDisponivelFilme" required>
+                                <option value="true">Disponível</option>
+                                <option value="false">Indisponível</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editLocacaoModal" tabindex="-1" aria-labelledby="editLocacaoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editLocacaoModalLabel">Editar Locação</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editLocacaoForm">
+                        <input type="hidden" id="editLocacaoId">
+                        <div class="mb-3">
+                            <label for="editClienteLocacao" class="form-label">Cliente</label>
+                            <select class="form-control" id="editClienteLocacao" required>
+                                <option value="">Selecione um Cliente</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFilmeLocacao" class="form-label">Filme</label>
+                            <select class="form-control" id="editFilmeLocacao" required>
+                                <option value="">Selecione um Filme</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDataLocacao" class="form-label">Data de Locação</label>
+                            <input type="date" class="form-control" id="editDataLocacao" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDataDevolucao" class="form-label">Data de Devolução</label>
+                            <input type="date" class="form-control" id="editDataDevolucao"> </div>
+                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
