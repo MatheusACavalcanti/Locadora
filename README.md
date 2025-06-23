@@ -4,7 +4,7 @@ Este é um projeto de uma Locadora desenvolvido para fins acadêmicos, utilizand
 
 ## ✅ Requisitos
 
-- JDK 17 ou superior  
+- JDK 17  
 - Maven 3.9.9  
 
 ## ⚙️ Configuração do Banco de Dados
